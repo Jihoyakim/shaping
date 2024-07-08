@@ -1,6 +1,8 @@
 package com.shaping.shaping.controller;
 
 import com.shaping.shaping.domain.Member;
+import com.shaping.shaping.enums.MemberStatus;
+import com.shaping.shaping.enums.RoleType;
 import com.shaping.shaping.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class MemberController {
                                     @RequestParam("email") String email,
                                     @RequestParam("tel") String tel,
                                     @RequestParam("sex") boolean sex) {
-        Member member = new Member(name,password,email,tel,sex);
+        Member member = new Member(name,password,email,tel,sex, RoleType.USER, MemberStatus.Y);
         memberService.signUp(member);
         return new ResponseEntity<>("회원가입 성공!",HttpStatus.OK);
     }

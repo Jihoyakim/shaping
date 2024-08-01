@@ -5,8 +5,20 @@
         SELECT * FROM member WHERE id = #{id}
     </select>
 
-    <insert id="addMember" parameterType="com.shaping.shaping.domain.Member">
+   <!-- <insert id="addMember" parameterType="com.shaping.shaping.domain.Member">
         INSERT INTO member (email, name, password, reg_dt, sex, tel, upd_dt)
         VALUES (#{email}, #{name}, #{password}, #{reg_dt}, #{sex}, #{tel}, #{upd_dt})
+    </insert>-->
+
+    <insert id="addMember" parameterType="com.shaping.shaping.domain.Member">
+        INSERT INTO member (
+            email, password, name, tel, sex,
+            role_type, member_status,
+            postcode, road_address, jibun_address, detail_add
+        ) VALUES (
+                     #{email}, #{password}, #{name}, #{tel}, #{sex},
+                     #{roleType}, #{memberStatus},
+                     #{address.postcode}, #{address.roadAddress}, #{address.jibunAddress}, #{address.detailAdd}
+                 )
     </insert>
 </mapper>

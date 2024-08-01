@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Time;
-import java.time.LocalDateTime;
-
 @Table(name = "item")
 @Entity
 @Getter
@@ -20,6 +17,9 @@ public class Item extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 아이템 유형
+    private int itemType;
+
     // 상품명
     private String itemName;
 
@@ -27,6 +27,9 @@ public class Item extends BaseEntity {
     private int price;
     // 수량
     private int stock;
+
+    private double disCount = 0.0;
+
     // SELL SOLD_OUT
     @Enumerated(EnumType.STRING)
     private ItemStatus itemStatus;

@@ -1,43 +1,79 @@
 package com.shaping.shaping.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shaping.shaping.security.CustomAuthenticationFilter;
+import com.shaping.shaping.security.CustomUserDetailService;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
 
-public class SecurityConfig{
+    private final CustomUserDetailService customUserDetailService;
+    private final AuthenticationConfiguration authenticationConfiguration;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder(); // 비밀번호 암호화
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
-                .formLogin(AbstractHttpConfigurer::disable) // form 로그인 비활성화
-                .authorizeHttpRequests(authorieRequest ->
-                        authorieRequest
-//                                .requestMatchers(AntPathRequestMatcher.antMatcher("/member/login")).authenticated() // 여긴 권한
-                                .anyRequest().permitAll() // 권한 없음
+        AuthenticationManager authenticationManager = authenticationManager();
+
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(customUserDetailService, authenticationManager);
+        customAuthenticationFilter.setFilterProcessesUrl("/member/auth");
+
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequest ->
+                        authorizeRequest
+                                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() //  스프링 부트 3.0부터 적용된 스프링 시큐리티 6.0 부터 forward 방식 페이지 이동에도 default로 인증이 걸리도록 변경되어서 JSP나 타임리프 등 컨트롤러에서 화면 파일명을 리턴해 ViewResolver가 작동해 페이지 이동을 하는 경우 위처럼 설정을 추가하셔야 합니다.
+                                .requestMatchers("/","/member/signup","/member/loginPage","/member/auth","/member/signUpForm").permitAll()
+                                .requestMatchers("/error","/resources/**","/webapp/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .headers( headersConfigurer ->
-                        headersConfigurer
-                                .frameOptions(
-                                        HeadersConfigurer.FrameOptionsConfig::sameOrigin
-                                )
-                );
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(log ->
+                        log.logoutUrl("/member/logout")
+                                .logoutSuccessUrl("/?logout=true")
+                                .deleteCookies("JSESSIONID")
+                                .permitAll()
+                )
+                .headers(headersConfigurer ->
+                        headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
+                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedSlash(true);
+        firewall.setAllowSemicolon(true);
+        firewall.setAllowUrlEncodedDoubleSlash(true);
+        firewall.setAllowBackSlash(true);
+        return firewall;
+    }
 }

@@ -1,0 +1,84 @@
+/* main.css 설정 */
+
+/* 기본 스타일 설정 */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: white;
+    margin: 0px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 2000px; /* 최소 높이 설정 */
+}
+
+/* 메인 영역 스타일 */
+main {
+    display: flex;
+    flex: 1;
+    margin: 20px;
+    flex-direction: column;
+    position: relative;
+    padding-top: 80px; /* 고정된 헤더 높이만큼 패딩 추가 */
+    margin-bottom: 80px; /* 푸터의 높이만큼 여백 추가 */
+}
+
+.content1 {
+    padding: 20px;
+    padding-top: 120px; /* 헤더의 높이만큼 패딩 추가 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.content2 {
+    padding: 20px;
+    padding-top: 50px; /* 헤더의 높이만큼 패딩 추가 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+/* 이미지 갤러리 스타일 */
+.image-gallery {
+    display: flex;
+    gap: 20px;
+    /*flex-wrap: wrap;*/
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* 이미지와 텍스트 스타일 */
+.image-gallery label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.image-gallery img {
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-gallery span {
+    margin-top: 8px; /* 이미지와 텍스트 사이의 여백 */
+    font-size: 16px;
+    color: #333; /* 텍스트 색상 설정 */
+}
+
+.space {
+    position: relative;
+    padding-bottom: 20px; /* 섹션 내용과 선 사이의 여백 */
+    margin-bottom: 20px; /* 섹션과 다음 요소 사이의 여백 */
+    border-bottom: 1px solid #eaeaea; /* 선의 두께, 스타일, 색상 설정 */
+}
+
+section {
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}

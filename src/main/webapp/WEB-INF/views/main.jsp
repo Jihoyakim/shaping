@@ -7,16 +7,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Shaping</title>
+    <link rel="stylesheet" type="text/css" href="/resources/static/css/main.css"> <!-- CSS 파일 링크 -->
 </head>
+<%@ include file="header.jsp"%>
 <body>
-<h1>Shaping에 오신 것을 환영합니다.</h1>
 
-<div>
-    <a href="/member/signUpForm">회원 가입</a>
-</div>
-<dvi>
-    <a href="/member/login">로그인</a>
-</dvi>
+<main>
+    <section class="content1">
+        <div class="image-gallery">
+            <label>
+                <img src="/resources/static/images/blueTshirts.jpg" alt="Pants 1">
+                <span>sample</span>
+            </label>
+            <label>
+                <img src="/resources/static/images/pants.jpg" alt="Pants 2">
+                <span>Pants 2</span>
+            </label>
+            <label>
+                <img src="/resources/static/images/Shoes.jpg" alt="Pants 3">
+                <span>Shoes</span>
+            </label>
+            <label>
+                <img src="/resources/static/images/iphone 14PRO.jpg" alt="Pants 4">
+                <span>iPhone 14 PRO</span>
+            </label>
+            <!-- 추가 이미지들 -->
+        </div>
+    </section>
 
+    <div class="space"></div>
+
+    <section>
+        <div>filter</div>
+    </section>
+    <div class="space"></div>
+
+    <section class="content2">
+        <div class="image-gallery">
+            <label>
+                <img src="/resources/static/images/blueTshirts.jpg" alt="Pants 1">
+                <span>sample</span>
+            </label>
+            <label>
+                <img src="/resources/static/images/pants.jpg" alt="Pants 2">
+                <span>Pants 2</span>
+            </label>
+            <label>
+                <img src="/resources/static/images/Shoes.jpg" alt="Pants 3">
+                <span>Shoes</span>
+            </label>
+            <label>
+                <img src="/resources/static/images/iphone 14PRO.jpg" alt="Pants 4">
+                <span>iPhone 14 PRO</span>
+            </label>
+            <!-- 추가 이미지들 -->
+        </div>
+    </section>
+</main>
 </body>
+<%@ include file="footer.jsp"%>
 </html>

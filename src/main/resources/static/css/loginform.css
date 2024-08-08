@@ -74,7 +74,7 @@ button#loginButton {
     font-size: 18px;
     font-weight: bold;
     margin-top: 20px;
-    border: 0.5px groove #003366;
+    border: 1px solid #ddd
 }
 
 button#loginButton:hover {

@@ -2,6 +2,7 @@ package com.shaping.shaping.domain;
 
 import com.shaping.shaping.enums.MemberType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +19,10 @@ public class MemberDto {
     private String name;
     @NotBlank(message = "전화번호는 필수 항목입니다.")
     private String tel;
-    @NotBlank(message = "성별은 필수 항목입니다.")
+    @NotNull(message = "성별은 필수 항목입니다.")
     private MemberType sex;
 
-    @NotBlank(message = "우편 번호는 필수 항목입니다.")
+    @NotNull(message = "우편 번호는 필수 항목입니다.")
     private int postcode;
 
     @NotBlank(message = "도로명 주소는 필수 항목입니다.")

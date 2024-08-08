@@ -134,7 +134,7 @@
                 postcode: $('#sample4_postcode').val(),
                 roadAddress: $('#sample4_roadAddress').val(),
                 jibunAddress: $('#sample4_jibunAddress').val(),
-                detailA: $('#sample4_detailAdd').val(),
+                detailAdd: $('#sample4_detailAdd').val(),
             };
 
             $.ajax({

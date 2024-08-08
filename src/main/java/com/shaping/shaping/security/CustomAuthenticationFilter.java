@@ -9,14 +9,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
-
-    private final CustomUserDetailService customUserDetailService;
 
     private final AuthenticationManager authenticationManager;
     @Override
@@ -28,16 +31,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             throw new AuthenticationException("이메일 또는 비밀번호를 입력하세요.") {};
         }
 
-        CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailService.loadUserByUsername(email);
+        email = email.trim();
 
-        if(!password.equals(customUserDetails.getPassword())) {
-            throw new AuthenticationException("비밀번호를 확인해주세요.") {};
-        }
-//        String passwordWithNoOp = "{noop}" + password;
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password,customUserDetails.getAuthorities());
-
-        return authenticationManager.authenticate(authenticationToken);
+        return authenticationManager.authenticate(authRequest);
     }
 
     @Override
@@ -45,6 +43,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         // 로그인 성공 시 처리 로직
         HttpSession session = request.getSession();
         session.setAttribute("username", authResult.getName());
+
+        Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
+        String roles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+
+                .collect(Collectors.joining(","));
+
+        session.setAttribute("userRole", roles);
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authResult);
+        SecurityContextHolder.setContext(context);
+
+        session.setAttribute("SPRING_SECURITY_CONTEXT", context);
 
         response.sendRedirect("/"); // 로그인 성공 시 이동할 URL
     }

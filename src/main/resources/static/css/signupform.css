@@ -78,7 +78,7 @@ h1 {
     font-size: 16px;
     margin-bottom: 20px;
     font-weight: bold;
-    border: 0.5px groove #003366;
+    border: 1px solid #ddd
 }
 
 .signup-form input[type="button"]:hover {
@@ -113,7 +113,7 @@ button#signupButton {
     font-size: 18px;
     margin-top: 20px;
     font-weight: bold;
-    border: 0.5px groove #003366;
+    border: 1px solid #ddd
 }
 
 button#signupButton:hover {

@@ -5,6 +5,7 @@ import com.shaping.shaping.enums.MemberType;
 import com.shaping.shaping.enums.RoleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +39,7 @@ public class Member extends BaseEntity {
 
     // 0 이면 여자 1 이면 남자
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "성별은 필수 항목입니다.")
+    @NotNull(message = "성별은 필수 항목입니다.")
     private MemberType sex;
 
     @Enumerated(EnumType.STRING)
@@ -48,7 +49,7 @@ public class Member extends BaseEntity {
     private MemberStatus memberStatus;
 
     @Embedded
-    @NotBlank(message = "주소는 필수 항목입니다.")
+    @NotNull(message = "주소는 필수 항목입니다.")
     private Address address;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)

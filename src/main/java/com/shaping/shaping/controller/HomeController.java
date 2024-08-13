@@ -53,10 +53,5 @@ public class HomeController {
         return ResponseEntity.ok("Username: " + username + ", Roles: " + roles + ", Security Context: " + securityContext);
     }
 
-    @GetMapping(value = "/admin/dashboard")
-//    @PreAuthorize("hasRole('ADMIN')")
-    public String manage(){
-        return "/admin/dashboard";
-    }
 
 }

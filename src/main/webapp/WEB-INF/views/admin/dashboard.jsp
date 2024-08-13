@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" type="text/css" href="/css/admin-dashboard.css"> <!-- 스타일 시트 링크 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 추가 -->
     <style>
         /* 기본 스타일 설정 */
         body {
@@ -16,8 +17,7 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            min-height: 2000px; /* 최소 높이 설정 */
+            min-height: 100vh; /* 최소 높이 설정 */
         }
 
         /* 헤더 스타일 */
@@ -47,18 +47,21 @@
         main {
             display: flex;
             flex: 1;
-            margin: 80px 20px 80px 20px; /* 헤더와 푸터의 높이만큼 여백 추가 */
-            flex-direction: column;
-            position: relative;
+            margin-top: 80px; /* 헤더 높이만큼 위 여백 추가 */
         }
 
         /* 사이드바 스타일 */
         .sidebar {
-            margin-top: 100px;
-            width: 250px;
+            width: 120px; /* 고정된 너비 설정 */
+            height: 180px;
             background-color: #fff;
             padding: 15px;
+            margin-top: 100px;
+            margin-left: 20px;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            text-align: center;
+            position: fixed; /* 화면 왼쪽에 고정 */
+            overflow-y: auto; /* 스크롤 가능하도록 설정 */
         }
 
         .menu-item {
@@ -77,9 +80,13 @@
 
         /* 컨텐츠 영역 스타일 */
         .content {
-            flex: 1;
+            flex: 1; /* 나머지 공간을 차지 */
             padding: 20px;
-            margin-left: 270px; /* 사이드바의 너비만큼 여백 추가 */
+            margin-left: 180px; /* 사이드바의 너비만큼 여백 추가 */
+            margin-top: 80px;
+            background-color: #f4f4f4;
+            overflow-y: auto; /* 컨텐츠도 스크롤 가능하도록 설정 */
+            height: calc(100vh - 80px); /* 헤더를 제외한 전체 화면을 차지 */
         }
 
         .section {
@@ -113,42 +120,6 @@
             background-color: #f4f4f4;
             text-align: left;
         }
-
-        /* 이미지 갤러리 스타일 */
-        .image-gallery {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .image-gallery label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .image-gallery img {
-            width: 200px;
-            height: 200px;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .image-gallery span {
-            margin-top: 8px;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .space {
-            position: relative;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eaeaea;
-        }
     </style>
 </head>
 <body>
@@ -157,103 +128,44 @@
 <main>
     <!-- 사이드바 -->
     <div class="sidebar">
-        <div class="menu-item"><a href="/admin/users">어드민 관리</a></div>
-        <div class="menu-item"><a href="/admin/products">상품 관리</a></div>
-        <div class="menu-item"><a href="/admin/coupons">쿠폰 관리</a></div>
-        <div class="menu-item"><a href="/admin/orders">주문 관리</a></div>
-        <div class="menu-item"><a href="/admin/reports">Reports</a></div>
+        <div class="menu-item"><a href="/admin/users" class="ajax-link">어드민 관리</a></div>
+        <div class="menu-item"><a href="/admin/products" class="ajax-link">상품 관리</a></div>
+        <div class="menu-item"><a href="/admin/coupons" class="ajax-link">쿠폰 관리</a></div>
+        <div class="menu-item"><a href="/admin/orders" class="ajax-link">주문 관리</a></div>
+        <div class="menu-item"><a href="/admin/reports" class="ajax-link">Reports</a></div>
     </div>
 
     <!-- 컨텐츠 영역 -->
     <div class="content">
-        <!-- 사용자 관리 섹션 -->
+        <!-- 기본적으로 표시할 콘텐츠 -->
         <div class="section">
-            <h4>Manage Users</h4>
+            <h4>Welcome to the Admin Dashboard</h4>
             <div class="section-content">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>john_doe</td>
-                        <td>john@example.com</td>
-                        <td>USER</td>
-                        <td><a href="/admin/users/edit/1">Edit</a> | <a href="/admin/users/delete/1">Delete</a></td>
-                    </tr>
-                    <!-- Repeat rows as needed -->
-                    </tbody>
-                </table>
+                <p>Select an option from the sidebar to manage different sections of the website.</p>
             </div>
         </div>
-
-        <!-- 제품 관리 섹션 -->
-        <div class="section">
-            <h4>Manage Products</h4>
-            <div class="section-content">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>101</td>
-                        <td>Product A</td>
-                        <td>Category 1</td>
-                        <td>$25.00</td>
-                        <td>100</td>
-                        <td><a href="/admin/products/edit/101">Edit</a> | <a href="/admin/products/delete/101">Delete</a></td>
-                    </tr>
-                    <!-- Repeat rows as needed -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 쿠폰 관리 섹션 -->
-        <div class="section">
-            <h4>Manage Coupons</h4>
-            <div class="section-content">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Description</th>
-                        <th>Discount</th>
-                        <th>Expiry Date</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>DISCOUNT10</td>
-                        <td>10% Off</td>
-                        <td>10%</td>
-                        <td>2024-12-31</td>
-                        <td><a href="/admin/coupons/edit/DISCOUNT10">Edit</a> | <a href="/admin/coupons/delete/DISCOUNT10">Delete</a></td>
-                    </tr>
-                    <!-- Repeat rows as needed -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 추가 섹션들 -->
     </div>
 </main>
+
+<script>
+    $(document).ready(function() {
+        $('.ajax-link').on('click', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    $('.content').html(response);
+                },
+                error: function() {
+                    alert('Content loading failed!');
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
